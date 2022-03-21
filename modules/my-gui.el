@@ -317,11 +317,13 @@
 ;; The beauty of undo-tree is that it means that, once you've typed something into a buffer,
 ;; you'll always be able to get it back. At least in theory. undo-tree has long-standing data
 ;; loss bugs that are unlikely to be fixed. But no other package provodes a comparable experience.
-
 (use-package undo-tree
+  :ensure t
+  :after evil
+  :diminish
   :config
-  (global-undo-tree-mode +1)
-  :diminish)
+  (evil-set-undo-system 'undo-tree)
+  (global-undo-tree-mode 1))
 
 ;; Recentf comes with Emacs but it should always be enabled.
 (use-package recentf
@@ -330,6 +332,12 @@
   (add-to-list 'recentf-exclude "\\.emacs.d")
   (add-to-list 'recentf-exclude ".+tmp......\\.org"))
 
+(global-set-key (kbd "C-u") #'evil-scroll-up)
+
+;; Folding
+(require 'vimish-fold)
+(global-set-key (kbd "<tab> f") #'vimish-fold)
+(global-set-key (kbd "<tab> v") #'vimish-fold-delete)
 
 ;; Always prefer newer files.
 (setq load-prefer-newer t)
