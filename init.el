@@ -58,7 +58,10 @@
 (use-package gnu-elpa-keyring-update)
 
 (ignore-errors
-    (set-frame-font "Hack Nerd Font Mono 13"))
+    (set-frame-font "Hack Nerd Font Mono 20"))
+
+;; Make font a bit larger
+(set-face-attribute 'default nil :height 150)
 
 ;; Loading before nearly anything so than any package is diminishable and the modeline doesn't get fucked
 (use-package diminish

@@ -1,7 +1,7 @@
 ;;; my-javascript -- Code for javascript configuration
 
 ;;; Commentary:
-;; Nothing special here, includes vue config
+;; Includes Vue and Tide config
 
 ;;; Code:
 (use-package vue-mode
