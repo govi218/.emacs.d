@@ -112,5 +112,7 @@
       (evil-set-initial-state `,(car mode-map) `,(cdr mode-map)))
     ))
 
+(evil-set-undo-system 'undo-redo)
+
 (provide 'my-evil)
 ;;; my-evil.el ends here
