@@ -99,6 +99,10 @@
     (define-key minibuffer-local-must-match-map [escape] 'abort-recursive-edit)
     (define-key minibuffer-local-isearch-map [escape] 'abort-recursive-edit)
 
+    (evil-define-key 'normal global-map (kbd "C-u") 'evil-scroll-up)
+    (evil-define-key 'insert global-map (kbd "C-u") 'evil-scroll-up)
+    (evil-define-key 'visual global-map (kbd "C-u") 'evil-scroll-up)
+
     ;; modes to map to diifferent default states
     (dolist (mode-map '((comint-mode . emacs)
                         (dashboard-mode . emacs)
