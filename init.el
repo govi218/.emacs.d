@@ -71,6 +71,7 @@
 
 ;; Custom modules
 (add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
+(require 'my-evil)
 (require 'my-gui)
 (require 'my-editing)
 (require 'my-python)
@@ -80,10 +81,10 @@
 (require 'my-go)
 (require 'my-cpp)
 (require 'my-prolog)
-(require 'my-evil)
 (require 'my-rust)
 (require 'my-configs)
 (require 'my-functions)
+(require 'my-sql)
 
 ;;; MISC things
 ;; I do all of my writing in either org-mode or markdown-mode.
