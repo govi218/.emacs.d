@@ -278,7 +278,8 @@
   (magit-diff-refine-hunk t)
   :config
   (magit-auto-revert-mode t)
-
+  ;; This allegedly is a magic perf boost on Mac
+  (setq magit-git-executable "/usr/bin/git")
   ;; Magit, and Emacs in general, has a nasty habit of prompting to save buffers
   ;; that are identical to those on disk. This is an attempt at remedying that,
   ;; one that I should probably attach to other functions like save-buffers-kill-emacs.
