@@ -319,10 +319,10 @@
 ;; you'll always be able to get it back. At least in theory. undo-tree has long-standing data
 ;; loss bugs that are unlikely to be fixed. But no other package provodes a comparable experience.
 
-(use-package undo-tree
-  :config
-  (global-undo-tree-mode +1)
-  :diminish)
+;; (use-package undo-tree
+  ;; :config
+  ;; (global-undo-tree-mode +1)
+  ;; :diminish)
 
 ;; Recentf comes with Emacs but it should always be enabled.
 (use-package recentf
