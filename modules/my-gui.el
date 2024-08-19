@@ -278,7 +278,8 @@
   (magit-diff-refine-hunk t)
   :config
   (magit-auto-revert-mode t)
-
+  ;; This allegedly is a magic perf boost on Mac
+  (setq magit-git-executable "/usr/bin/git")
   ;; Magit, and Emacs in general, has a nasty habit of prompting to save buffers
   ;; that are identical to those on disk. This is an attempt at remedying that,
   ;; one that I should probably attach to other functions like save-buffers-kill-emacs.
@@ -318,10 +319,10 @@
 ;; you'll always be able to get it back. At least in theory. undo-tree has long-standing data
 ;; loss bugs that are unlikely to be fixed. But no other package provodes a comparable experience.
 
-(use-package undo-tree
-  :config
-  (global-undo-tree-mode +1)
-  :diminish)
+;; (use-package undo-tree
+  ;; :config
+  ;; (global-undo-tree-mode +1)
+  ;; :diminish)
 
 ;; Recentf comes with Emacs but it should always be enabled.
 (use-package recentf
