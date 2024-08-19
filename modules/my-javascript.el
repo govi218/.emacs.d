@@ -8,6 +8,50 @@
 (use-package company :ensure t)
 (use-package flycheck :ensure t)
 
+;; json-mode
+(use-package json-mode
+  :ensure t)
+
+;; web-mode
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+(use-package web-mode
+  :ensure t
+  :mode (("\\.js\\'" . web-mode)
+	 ("\\.jsx\\'" .  web-mode)
+	 ("\\.ts\\'" . web-mode)
+	 ("\\.tsx\\'" . web-mode)
+	 ("\\.svelte\\'" . web-mode)
+	 ("\\.html\\'" . web-mode)))
+
+;; (add-hook 'after-init-hook #'global-prettier-mode)
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (prettier-prettify))))
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (string-equal "ts" (file-name-extension buffer-file-name))
+              (prettier-prettify))))
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (string-equal "js" (file-name-extension buffer-file-name))
+              (prettier-prettify))))
+
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (string-equal "jsx" (file-name-extension buffer-file-name))
+              (prettier-prettify))))
+
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (or (string-equal "ts" (file-name-extension buffer-file-name))
+                      (string-equal "tsx" (file-name-extension buffer-file-name))
+                      (string-equal "js" (file-name-extension buffer-file-name))
+                      (string-equal "jsx" (file-name-extension buffer-file-name)))
+              (setup-tide-mode))))
+
 (defun setup-tide-mode ()
   (interactive)
   (tide-setup)
@@ -30,16 +74,10 @@
 (add-hook 'before-save-hook 'tide-format-before-save)
 
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
-(require 'web-mode)
-
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-(add-hook 'web-mode-hook
-          (lambda ()
-            (when (string-equal "tsx" (file-name-extension buffer-file-name))
-              (setup-tide-mode))))
 
 ;; enable typescript - tslint checker
 (flycheck-add-mode 'typescript-tslint 'web-mode)
+(flycheck-add-mode 'typescript-tide 'web-mode)
 
 (use-package vue-mode
   :config
@@ -58,10 +96,9 @@
 (add-hook 'js-mode-hook 'lsp-deferred)
 (add-hook 'js-jsx-mode-hook 'lsp-deferred)
 
-(use-package typescript-mode)
+(use-package svelte-mode)
 
-(use-package prettier-js)
-(add-hook 'js2-mode-hook 'prettier-js-mode)
+(use-package typescript-mode)
 
 (quelpa '(npm :fetcher github :repo "shaneikennedy/npm.el"))
 (require 'npm )
@@ -72,7 +109,6 @@
   (insert "<template>\n</template>
 	    \n<script>\n export default {};\n</script>
 	    \n\n<style scoped>\n</style>"))
-
 
 (provide 'my-javascript)
 ;;; my-javascript.el ends here
