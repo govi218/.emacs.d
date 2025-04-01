@@ -68,24 +68,24 @@
   (interactive)
   (rustlings--exec "hint " (rustlings--current-exercise)))
 
-(define-transient-command rustlings--run-menu ()
-  "Open bazel transient menu pop up."
-    [["Rustlings command"
-      ("n" "Next"       rustlings--run-next)
-      ("c" "Current exercise"       rustlings--run-current)]]
-  (interactive)
-  (transient-setup 'rustlings--run-menu))
+;; (define-transient-command rustlings--run-menu ()
+;;   "Open bazel transient menu pop up."
+;;     [["Rustlings command"
+;;       ("n" "Next"       rustlings--run-next)
+;;       ("c" "Current exercise"       rustlings--run-current)]]
+;;   (interactive)
+;;   (transient-setup 'rustlings--run-menu))
 
 
-(define-transient-command rustlings--menu ()
-  "Open bazel transient menu pop up."
-    [["Rustlings command"
-      ("v" "Verify"       rustlings--verify)
-      ("w" "Watch"       rustlings--watch)
-      ("h" "Hint"       rustlings--hint)
-      ("r" "Run"       rustlings--run-menu)]]
-  (interactive)
-  (transient-setup 'rustlings--menu))
+;; (define-transient-command rustlings--menu ()
+;;   "Open bazel transient menu pop up."
+;;     [["Rustlings command"
+;;       ("v" "Verify"       rustlings--verify)
+;;       ("w" "Watch"       rustlings--watch)
+;;       ("h" "Hint"       rustlings--hint)
+;;       ("r" "Run"       rustlings--run-menu)]]
+;;   (interactive)
+;;   (transient-setup 'rustlings--menu))
 
 (provide 'my-rust)
 ;;; my-rust ends here

@@ -4,7 +4,9 @@
 
 ;;; Code:
 ;; Company is the best Emacs completion system.
-(use-package company
+;; I'm using company-box as it can coexist with Copilot completions
+(use-package company-box
+  :hook (company-mode . company-box-mode)
   :bind (("C-." . company-complete))
   :diminish company-mode
   :custom

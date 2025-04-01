@@ -96,6 +96,8 @@
 (add-hook 'js-mode-hook 'lsp-deferred)
 (add-hook 'js-jsx-mode-hook 'lsp-deferred)
 
+(setq tide-server-max-response-length 1024000)
+
 (use-package svelte-mode)
 
 (use-package typescript-mode)

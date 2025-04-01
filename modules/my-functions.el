@@ -73,14 +73,14 @@
        (set-buffer (find-file-noselect (projectile-project-root)))
        (call-interactively 'compile))))
 
-(define-transient-command bazel--menu ()
-  "Open bazel transient menu pop up."
-    [["Bazel command"
-      ("b" "Build"       bazel--build)
-      ("r" "Run"         bazel--run)
-      ("t" "Test"        bazel--test)]]
-  (interactive)
-  (transient-setup 'bazel--menu))
+;; (define-transient-command bazel--menu ()
+  ;; "Open bazel transient menu pop up."
+    ;; [["Bazel command"
+      ;; ("b" "Build"       bazel--build)
+      ;; ("r" "Run"         bazel--run)
+      ;; ("t" "Test"        bazel--test)]]
+  ;; (interactive)
+  ;; (transient-setup 'bazel--menu))
 
 ;; Optional
 (add-hook 'java-mode-hook
@@ -127,13 +127,46 @@
   (interactive)
   (git-fetch-reset "upstream"))
 
-(define-transient-command git-sync ()
-  "Open git-sync transient menu pop up."
-    [["Git sync"
-      ("o" "origin"       git-sync-origin)
-      ("u" "upstream"         git-sync-upstream)]]
+;; (define-transient-command git-sync ()
+  ;; "Open git-sync transient menu pop up."
+    ;; [["Git sync"
+      ;; ("o" "origin"       git-sync-origin)
+      ;; ("u" "upstream"         git-sync-upstream)]]
+  ;; (interactive)
+  ;; (transient-setup 'git-sync))
+
+(defun xah-syntax-color-hsl ()
+  "Syntax color CSS's HSL color spec eg 「hsl(0,90%,41%)」 in current buffer.
+URL `http://xahlee.info/emacs/emacs/emacs_CSS_colors.html'
+Version 2017-02-02"
   (interactive)
-  (transient-setup 'git-sync))
+  (require 'color)
+  (font-lock-add-keywords
+   nil
+   '(("hsl( *\\([0-9]\\{1,3\\}\\) *, *\\([0-9]\\{1,3\\}\\)% *, *\\([0-9]\\{1,3\\}\\)% *)"
+      (0 (put-text-property
+          (+ (match-beginning 0) 3)
+          (match-end 0)
+          'face
+          (list
+           :background
+           (concat
+            "#"
+            (mapconcat
+             'identity
+             (mapcar
+              (lambda (x) (format "%02x" (round (* x 255))))
+              (color-hsl-to-rgb
+               (/ (string-to-number (match-string-no-properties 1)) 360.0)
+               (/ (string-to-number (match-string-no-properties 2)) 100.0)
+               (/ (string-to-number (match-string-no-properties 3)) 100.0)))
+             "" )) ;  "#00aa00"
+           ))))))
+  (font-lock-flush))
+
+(add-hook 'css-mode-hook 'xah-syntax-color-hsl)
+(add-hook 'php-mode-hook 'xah-syntax-color-hsl)
+(add-hook 'html-mode-hook 'xah-syntax-color-hsl)
 
 (provide 'my-functions)
 ;;; my-functions.el ends here
