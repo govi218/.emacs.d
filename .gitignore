@@ -46,3 +46,7 @@ smex-items
 .lsp-session-v1
 eclipse.jdt.ls
 workspace
+.aider*
+
+## Environment variables
+.env
