@@ -111,32 +111,37 @@
       (or (file-exists-p (expand-file-name "deno.json" (file-name-directory dir)))
           (locate-dominating-file dir "deno.json")))))
 
-;; Deno eglot class and configuration
-(defclass eglot-deno (eglot-lsp-server) ()
-  :documentation "A custom class for deno lsp.")
+;; Deno eglot class and configuration - wrapped in eval-after-load
+(with-eval-after-load 'eglot
+  (defclass eglot-deno (eglot-lsp-server) ()
+    :documentation "A custom class for deno lsp.")
 
-(cl-defmethod eglot-initialization-options ((server eglot-deno))
-  "Passes through required deno initialization options"
-  (list
-    :enable t
-    :unstable t
-    :typescript
-      (:inlayHints
-        (:variableTypes
-          (:enabled t))
-        (:parameterTypes
-          (:enabled t)))))
+  (cl-defmethod eglot-initialization-options ((server eglot-deno))
+    "Passes through required deno initialization options"
+    (list
+      :enable t
+      :unstable t
+      :typescript
+        (:inlayHints
+          (:variableTypes
+            (:enabled t))
+          (:parameterTypes
+            (:enabled t)))))
 
-;; Conditional server program setup
-(defun setup-typescript-lsp ()
-  "Setup appropriate LSP server based on project type"
-  (if (is-deno-project-p)
-      (add-to-list 'eglot-server-programs '((js-mode typescript-mode web-mode) . (eglot-deno "deno" "lsp")))
-    ;; Keep existing LSP setup for non-Deno projects
-    (add-to-list 'eglot-server-programs '((js-mode typescript-mode web-mode) . ("typescript-language-server" "--stdio")))))
+  ;; Conditional server program setup
+  (defun setup-typescript-lsp ()
+    "Setup appropriate LSP server based on project type"
+    (if (is-deno-project-p)
+        (add-to-list 'eglot-server-programs '((js-mode typescript-mode web-mode) . (eglot-deno "deno" "lsp")))
+      ;; Keep existing LSP setup for non-Deno projects
+      (add-to-list 'eglot-server-programs '((js-mode typescript-mode web-mode) . ("typescript-language-server" "--stdio")))))
 
-(quelpa '(npm :fetcher github :repo "shaneikennedy/npm.el"))
-(require 'npm )
+  ;; Setup LSP based on project type
+  (setup-typescript-lsp))
+
+;; Convert npm package to use straight.el instead of quelpa
+(use-package npm
+  :straight (:host github :repo "shaneikennedy/npm.el"))
 
 (defun sk/vue-base()
   "Snippet for base vue template."
@@ -144,9 +149,6 @@
   (insert "<template>\n</template>
 	    \n<script>\n export default {};\n</script>
 	    \n\n<style scoped>\n</style>"))
-
-;; Setup LSP based on project type
-(setup-typescript-lsp)
 
 (provide 'my-javascript)
 ;;; my-javascript.el ends here
