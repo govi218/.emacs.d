@@ -1,46 +1,41 @@
 ;;; init.el -- My Emacs configuration
 
-
 ;;; Commentary:
 ;; As of right now, common configurations are in ./modules
-;; The code begins with setting up Emacs with use package and other necessary
-;; initialization settings. It then loads my custom modules, and ends with misc
-;; things that I can't find a good enough name to group together as
-
+;; The code begins with setting up Emacs with straight.el and use-package.
+;; It then loads my custom modules, and ends with misc things.
 
 ;;; Code:
-(require 'package)
 
-(defmacro append-to-list (target suffix)
-  "Append SUFFIX to TARGET in place."
-  `(setq ,target (append ,target ,suffix)))
+;; Bootstrap straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(append-to-list package-archives
-                '(("melpa" . "http://melpa.org/packages/")
-                  ("melpa-stable" . "http://stable.melpa.org/packages/")
-                  ("org-elpa" . "https://orgmode.org/elpa/")))
+;; Don't build built-in packages that come with Emacs 30
+(setq straight-built-in-pseudo-packages
+      (append straight-built-in-pseudo-packages
+              '(project xref eldoc flymake jsonrpc eglot)))
 
-(package-initialize)
+;; Install use-package via straight
+(straight-use-package 'use-package)
 
-(unless (package-installed-p 'quelpa)
-    (with-temp-buffer
-      (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
-      (eval-buffer)
-      (quelpa-self-upgrade)))
-
-;; Ensure use-package is present. From here on out, all packages are loaded
-;; with use-package.
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;; Configure use-package to use straight.el by default
+(setq straight-use-package-by-default t)
 
 ;; Allow navigation between use-package stanzas with imenu.
-;; This has to be set before loading use-package.
 (defvar use-package-enable-imenu-support t)
 (require 'use-package)
-(setq
- use-package-always-ensure t
- use-package-verbose t)
+(setq use-package-verbose t)
 
 ;; Any Customize-based settings should live in custom.el, not here.
 (setq custom-file "~/.emacs.d/custom.el")
@@ -71,6 +66,7 @@
 
 ;; Custom modules
 (add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
+(require 'my-configs)
 (require 'my-evil)
 (require 'my-gui)
 (require 'my-editing)
@@ -82,7 +78,6 @@
 (require 'my-cpp)
 (require 'my-prolog)
 (require 'my-rust)
-(require 'my-configs)
 (require 'my-functions)
 (require 'my-sql)
 (require 'my-copilot)
