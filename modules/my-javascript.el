@@ -1,7 +1,7 @@
 ;;; my-javascript -- Code for javascript configuration
 
 ;;; Commentary:
-;; Includes Vue and Tide config
+;; Includes Vue, Svelte and Tide config
 
 ;;; Code:
 (use-package tide :ensure t)
@@ -23,8 +23,16 @@
 	 ("\\.jsx\\'" .  web-mode)
 	 ("\\.ts\\'" . web-mode)
 	 ("\\.tsx\\'" . web-mode)
-	 ("\\.svelte\\'" . web-mode)
 	 ("\\.html\\'" . web-mode)))
+
+;; Svelte mode
+(use-package svelte-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.svelte\\'" . svelte-mode)))
+
+(use-package typescript-mode
+  :ensure t)
 
 ;; (add-hook 'after-init-hook #'global-prettier-mode)
 (add-hook 'before-save-hook
@@ -45,6 +53,12 @@
             (when (string-equal "jsx" (file-name-extension buffer-file-name))
               (prettier-prettify))))
 
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (string-equal "svelte" (file-name-extension buffer-file-name))
+              (prettier-prettify))))
+
+
 (add-hook 'web-mode-hook
           (lambda ()
             (when (or (string-equal "ts" (file-name-extension buffer-file-name))
@@ -52,6 +66,9 @@
                       (string-equal "js" (file-name-extension buffer-file-name))
                       (string-equal "jsx" (file-name-extension buffer-file-name)))
               (setup-tide-mode))))
+
+;; Setup Svelte language server for Svelte mode
+(add-hook 'svelte-mode-hook #'eglot-ensure)
 
 (defun setup-tide-mode ()
   (interactive)
@@ -81,16 +98,20 @@
 (flycheck-add-mode 'typescript-tide 'web-mode)
 
 (use-package vue-mode
+  :ensure t
   :config
   (setq mmm-submode-decoration-level 0)
   (add-hook 'vue-mode-hook #'lsp))
 
 (use-package emmet-mode
-  :hook (css-mode sgml-mode vue-mode js-jsx-mode js-mode))
+  :ensure t
+  :hook (css-mode sgml-mode vue-mode svelte-mode js-jsx-mode js-mode))
 
 (use-package eslintd-fix
+  :ensure t
   :config
     (add-hook 'vue-mode-hook 'eslintd-fix-mode)
+    (add-hook 'svelte-mode-hook 'eslintd-fix-mode)
     (add-hook 'js-jsx-mode-hook 'eslintd-fix-mode)
     (add-hook 'js-mode-hook 'eslintd-fix-mode))
 
@@ -110,6 +131,16 @@
     (when dir
       (or (file-exists-p (expand-file-name "deno.json" (file-name-directory dir)))
           (locate-dominating-file dir "deno.json")))))
+
+;; Svelte project detection
+(defun is-svelte-project-p ()
+  "Check if current buffer is in a Svelte project by looking for svelte.config.js"
+  (let ((dir (or (buffer-file-name) default-directory)))
+    (when dir
+      (or (file-exists-p (expand-file-name "svelte.config.js" (file-name-directory dir)))
+          (file-exists-p (expand-file-name "svelte.config.cjs" (file-name-directory dir)))
+          (locate-dominating-file dir "svelte.config.js")
+          (locate-dominating-file dir "svelte.config.cjs")))))
 
 ;; Deno eglot class and configuration - wrapped in eval-after-load
 (with-eval-after-load 'eglot
@@ -149,6 +180,13 @@
   (insert "<template>\n</template>
 	    \n<script>\n export default {};\n</script>
 	    \n\n<style scoped>\n</style>"))
+
+(defun sk/svelte-base()
+  "Snippet for base Svelte component template."
+  (interactive)
+  (insert "<script>\n  // Component logic here\n</script>
+	    \n\n<main>\n  <!-- Your markup here -->\n</main>
+	    \n\n<style>\n  /* Component styles here */\n</style>"))
 
 (provide 'my-javascript)
 ;;; my-javascript.el ends here
