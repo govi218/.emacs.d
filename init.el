@@ -65,22 +65,26 @@
   (diminish 'eldoc-mode))
 
 ;; Custom modules
-(add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
-(require 'my-configs)
+(let ((modules-dir (expand-file-name "modules" user-emacs-directory)))
+  (add-to-list 'load-path modules-dir)
+  (message "Modules directory: %s" modules-dir)
+  (message "Files in modules: %s" (directory-files modules-dir)))
 (require 'my-evil)
 (require 'my-gui)
 (require 'my-editing)
 (require 'my-python)
-(require 'my-javascript)
 (require 'my-haskell)
 (require 'my-docker)
 (require 'my-go)
 (require 'my-cpp)
 (require 'my-prolog)
 (require 'my-rust)
+(require 'my-configs)
+(require 'my-copilot)
 (require 'my-functions)
 (require 'my-sql)
-(require 'my-copilot)
+(require 'my-javascript)
+(require 'my-svelte)
 
 ;;; MISC things
 ;; I do all of my writing in either org-mode or markdown-mode.
