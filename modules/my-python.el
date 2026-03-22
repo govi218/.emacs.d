@@ -1,37 +1,30 @@
 ;;; my-python.el -- Code for python configuration
-
 ;;; Commentary:
-;; Nothiong special besides the user of djanog-test-runner
-;; this package is not availbale on melpa so we need to configure it
+;; Nothing special besides the use of django-test-runner
+;; this package is not available on melpa so we need to configure it
 ;; locally.
-
 ;;; Code:
+
 (use-package python
-  :init
-  (require 'python)
+  :straight nil  ; built-in package
   :bind (:map python-mode-map
-          ("<f2>" . py-isort-buffer))
-  :config
-  (add-hook 'python-mode-hook #'auto-virtualenv-set-virtualenv))
-
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp))))  ; or lsp-deferred
-
-(use-package blacken
-  :bind (:map python-mode-map
+              ("<f2>" . py-isort-buffer)
               ("M-q" . blacken-buffer)))
 
-(use-package py-isort
-  :ensure t)
+(use-package lsp-pyright
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))
 
-(use-package pyvenv
-  :ensure t)
+(use-package blacken)
 
-(use-package auto-virtualenv
-  :ensure t)
+(use-package py-isort)
+
+(use-package pyvenv)
+
+;; Add linting support
+(use-package flycheck
+  :hook (python-mode . flycheck-mode))
 
 (provide 'my-python)
-;;; my-python ends here
+;;; my-python.el ends here
