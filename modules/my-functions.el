@@ -73,43 +73,6 @@
        (set-buffer (find-file-noselect (projectile-project-root)))
        (call-interactively 'compile))))
 
-;; (define-transient-command bazel--menu ()
-  ;; "Open bazel transient menu pop up."
-    ;; [["Bazel command"
-      ;; ("b" "Build"       bazel--build)
-      ;; ("r" "Run"         bazel--run)
-      ;; ("t" "Test"        bazel--test)]]
-  ;; (interactive)
-  ;; (transient-setup 'bazel--menu))
-
-;; Optional
-(add-hook 'java-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c C-b m") #'bazel--menu)
-            (local-set-key (kbd "C-c C-b b") #'bazel--build)
-            (local-set-key (kbd "C-c C-b r") #'bazel--run)
-            (local-set-key (kbd "C-c C-b t") #'bazel--test)))
-
-(add-hook 'bazel-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c C-b m") #'bazel--menu)
-            (local-set-key (kbd "C-c C-b b") #'bazel--build)
-            (local-set-key (kbd "C-c C-b r") #'bazel--run)
-            (local-set-key (kbd "C-c C-b t") #'bazel--test)))
-
-(add-hook 'go-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c C-b m") #'bazel--menu)
-            (local-set-key (kbd "C-c C-b b") #'bazel--build)
-            (local-set-key (kbd "C-c C-b r") #'bazel--run)
-            (local-set-key (kbd "C-c C-b t") #'bazel--test)))
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c C-b m") #'bazel--menu)
-            (local-set-key (kbd "C-c C-b b") #'bazel--build)
-            (local-set-key (kbd "C-c C-b r") #'bazel--run)
-            (local-set-key (kbd "C-c C-b t") #'bazel--test)))
 
 (defun git-fetch-reset (remote)
   "Fetch REMOTE/master and reset master."
@@ -127,13 +90,6 @@
   (interactive)
   (git-fetch-reset "upstream"))
 
-;; (define-transient-command git-sync ()
-  ;; "Open git-sync transient menu pop up."
-    ;; [["Git sync"
-      ;; ("o" "origin"       git-sync-origin)
-      ;; ("u" "upstream"         git-sync-upstream)]]
-  ;; (interactive)
-  ;; (transient-setup 'git-sync))
 
 (defun xah-syntax-color-hsl ()
   "Syntax color CSS's HSL color spec eg 「hsl(0,90%,41%)」 in current buffer.
