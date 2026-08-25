@@ -3,6 +3,7 @@
 ;;; Commentary:
 
 ;;; Code:
+(require 'transient)
 (defun sk/apply-macro-page ()
   "Apply the currently defined keyboard marco to everyline of the page."
   (interactive)
@@ -73,7 +74,7 @@
        (set-buffer (find-file-noselect (projectile-project-root)))
        (call-interactively 'compile))))
 
-(define-transient-command bazel--menu ()
+(transient-define-prefix bazel--menu ()
   "Open bazel transient menu pop up."
     [["Bazel command"
       ("b" "Build"       bazel--build)
@@ -127,7 +128,7 @@
   (interactive)
   (git-fetch-reset "upstream"))
 
-(define-transient-command git-sync ()
+(transient-define-prefix git-sync ()
   "Open git-sync transient menu pop up."
     [["Git sync"
       ("o" "origin"       git-sync-origin)
