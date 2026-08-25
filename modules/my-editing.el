@@ -33,7 +33,8 @@
   :config
   (setq lsp-prefer-flymake nil
         lsp-enable-snippet nil
-        lsp-headerline-breadcrumb-mode nil))
+        lsp-headerline-breadcrumb-mode nil
+        lsp--client-packages-required t))
 
 (use-package dap-mode
     :after lsp-mode
