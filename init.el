@@ -9,6 +9,13 @@
 
 
 ;;; Code:
+;; Enable lexical scoping globally and suppress the Emacs 31+ "Missing
+;; lexical-binding cookie" warnings. The warnings come from `files.el`
+;; (condition: `files missing-lexbind-cookie`) and fire on every .el file
+;; load. Since we set lexical binding globally, the cookies are redundant.
+(setq-default lexical-binding t)
+(setq warning-suppress-log-types '((files missing-lexbind-cookie)))
+
 (require 'package)
 
 (defmacro append-to-list (target suffix)
